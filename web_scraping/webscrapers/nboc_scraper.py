@@ -21,7 +21,7 @@ def scrape_nboc():
     
     while True:
 
-        driver.get(f"https://emplois.bnc.ca/en_CA/careers/searchjobs/Canada/?listFilterMode=1&jobRecordsPerPage=20&jobOffset={start}")
+        driver.get(f"https://emplois.bnc.ca/en_CA/careers/searchjobs/Canada?3282=61&3282_format=1822&listFilterMode=1&jobRecordsPerPage=20&jobOffset={start}")
         time.sleep(3)
         job_cards = driver.find_elements(By.CSS_SELECTOR, 'tr')
         if not job_cards:

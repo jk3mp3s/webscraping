@@ -20,9 +20,9 @@ def scrape_bmo():
     while True:
 
         if start == 0:
-            url = "https://jobs.bmo.com/ca/en/interns?s=1&rk=l-interns"
+            url = "https://jobs.bmo.com/ca/en/search-results?keywords=student"
         else:
-            url = f"https://jobs.bmo.com/ca/en/interns?from={start}&s=1&rk=l-interns"
+            url = f"https://jobs.bmo.com/ca/en/interns?from={start}&s=1&rk=l-student"
 
         driver.get(url)
         time.sleep(3)
