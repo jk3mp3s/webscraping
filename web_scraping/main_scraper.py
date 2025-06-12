@@ -1,6 +1,9 @@
 import os
 import importlib.util
 import csv
+import pandas as pd
+import clean_listings
+from datetime import datetime
 
 def load_scrapers(folder_path):
     scrapers = []
@@ -39,12 +42,30 @@ def main():
     all_jobs.sort(key=lambda x: x["Company"])
 
     # Write to CSV
-    with open("all_jobs.csv", mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=["Company", "Job Title", "Location", "Link"])
-        writer.writeheader()
-        writer.writerows(all_jobs)
+    file_exists = os.path.isfile("all_jobs.csv")
+    with open("all_jobs.csv", mode="a", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=["Company", "Job Title", "Location", "Link","Date Added"])
+
+        if not file_exists:
+            writer.writeheader()
+
+        for job in all_jobs:
+            job["Date Added"] = datetime.now().strftime("%Y-%m-%d")
+            writer.writerow(job)
 
     print(f"\n✅ Scraped {len(all_jobs)} jobs into all_jobs.csv")
+
+    clean_listings.clean_jobs("all_jobs.csv")
+
+    # Optional: also save as Excel
+    try:
+        df = pd.read_csv("all_jobs.csv")
+        df.to_excel("all_jobs.xlsx", index=False, engine="openpyxl")
+        print("📄 Also saved as all_jobs.xlsx")
+    except Exception as e:
+        print(f"⚠️ Failed to save Excel file: {e}")
+
+    
 
 if __name__ == "__main__":
     main()
